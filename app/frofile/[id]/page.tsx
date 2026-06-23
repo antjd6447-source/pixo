@@ -1,5 +1,6 @@
-const profileData: Record<string, any> = {
-  "fox-boy": {
+const profiles = [
+  {
+    slug: "fox-boy",
     image: "/dlalwl1.png",
     name: "Fox Boy",
     species: "Fox",
@@ -7,7 +8,8 @@ const profileData: Record<string, any> = {
     views: "2.1K",
     description: "A young fox adventurer exploring the world.",
   },
-  "forest-archer": {
+  {
+    slug: "forest-archer",
     image: "/dlalwl2.png",
     name: "Forest Archer",
     species: "Fox",
@@ -15,7 +17,8 @@ const profileData: Record<string, any> = {
     views: "1.8K",
     description: "A skilled archer from the deep forest.",
   },
-  "young-explorer": {
+  {
+    slug: "young-explorer",
     image: "/dlalwl3.png",
     name: "Young Explorer",
     species: "Fox",
@@ -23,7 +26,8 @@ const profileData: Record<string, any> = {
     views: "3.4K",
     description: "Always searching for new adventures.",
   },
-  "adventure-kid": {
+  {
+    slug: "adventure-kid",
     image: "/dlalwl4.png",
     name: "Adventure Kid",
     species: "Fox",
@@ -31,7 +35,7 @@ const profileData: Record<string, any> = {
     views: "2.7K",
     description: "A brave child with endless curiosity.",
   },
-};
+];
 
 export default async function ProfilePage({
   params,
@@ -40,18 +44,18 @@ export default async function ProfilePage({
 }) {
   const { id } = await params;
 
-  const profile = profileData[id];
+  const profile = profiles.find(
+    (item) => item.slug === id
+  );
 
   if (!profile) {
-    return <div className="p-10">Profile Not Found</div>;
+    return <div>Profile Not Found</div>;
   }
 
   return (
     <main className="min-h-screen bg-white text-black">
       <div className="max-w-5xl mx-auto px-6 py-10">
-
-        <div className="grid md:grid-cols-2 gap-10 items-center">
-
+        <div className="grid md:grid-cols-2 gap-10">
           <img
             src={profile.image}
             alt={profile.name}
@@ -63,7 +67,7 @@ export default async function ProfilePage({
               {profile.name}
             </h1>
 
-            <div className="flex gap-4 mt-4">
+            <div className="flex gap-5 mt-4">
               <span>❤️ {profile.likes}</span>
               <span>👁 {profile.views}</span>
             </div>
@@ -78,19 +82,11 @@ export default async function ProfilePage({
               {profile.description}
             </p>
 
-            <div className="flex gap-4 mt-8">
-              <button className="border px-5 py-3 rounded-xl">
-                ❤️ Like
-              </button>
-
-              <button className="bg-black text-white px-5 py-3 rounded-xl">
-                Download
-              </button>
-            </div>
+            <button className="mt-8 bg-black text-white px-6 py-3 rounded-xl">
+              Download
+            </button>
           </div>
-
         </div>
-
       </div>
     </main>
   );

@@ -1,40 +1,61 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
+  const [search, setSearch] = useState("");
+
   const profiles = [
     {
       slug: "fox-boy",
       image: "/dlalwl1.png",
-      name: "Fox Boy",
-      species: "Fox",
+      name: "여우 소년",
+      species: "여우",
       likes: 124,
       views: "2.1K",
+      tags: ["여우", "소년", "판타지", "모험가"],
     },
     {
       slug: "forest-archer",
       image: "/dlalwl2.png",
-      name: "Forest Archer",
-      species: "Fox",
+      name: "숲의 궁수",
+      species: "여우",
       likes: 98,
       views: "1.8K",
+      tags: ["여우", "궁수", "숲", "판타지"],
     },
     {
       slug: "young-explorer",
       image: "/dlalwl3.png",
-      name: "Young Explorer",
-      species: "Fox",
+      name: "어린 탐험가",
+      species: "여우",
       likes: 201,
       views: "3.4K",
+      tags: ["탐험가", "소년", "판타지"],
     },
     {
       slug: "adventure-kid",
       image: "/dlalwl4.png",
-      name: "Adventure Kid",
-      species: "Fox",
+      name: "어드벤처 키드",
+      species: "여우",
       likes: 156,
       views: "2.7K",
+      tags: ["모험가", "여우", "소년"],
     },
   ];
+
+  const filteredProfiles = profiles.filter((profile) => {
+    const keyword = search.toLowerCase();
+
+    return (
+      profile.name.toLowerCase().includes(keyword) ||
+      profile.species.toLowerCase().includes(keyword) ||
+      profile.tags.some((tag) =>
+        tag.toLowerCase().includes(keyword)
+      )
+    );
+  });
 
   return (
     <main className="min-h-screen bg-white text-black">
@@ -45,7 +66,7 @@ export default function Home() {
           </h1>
 
           <button className="border px-4 py-2 rounded-xl">
-            Login
+            로그인
           </button>
         </div>
       </header>
@@ -53,18 +74,20 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-6 py-8">
         <input
           type="text"
-          placeholder="Search Profiles..."
+          placeholder="프로필 검색..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           className="w-full border rounded-2xl px-5 py-4 text-lg"
         />
       </section>
 
       <section className="max-w-7xl mx-auto px-6 pb-20">
         <h2 className="text-2xl font-bold mb-6">
-          Today's Picks
+          오늘의 추천
         </h2>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {profiles.map((profile) => (
+          {filteredProfiles.map((profile) => (
             <Link
               key={profile.slug}
               href={`/profile/${profile.slug}`}
@@ -88,6 +111,17 @@ export default function Home() {
                 <div className="flex justify-between mt-3 text-sm">
                   <span>❤️ {profile.likes}</span>
                   <span>👁 {profile.views}</span>
+                </div>
+
+                <div className="flex flex-wrap gap-1 mt-3">
+                  {profile.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs border rounded-full px-2 py-1"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </Link>
